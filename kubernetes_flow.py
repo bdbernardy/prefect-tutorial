@@ -6,6 +6,8 @@ from prefect import task, Flow, Parameter
 from prefect.run_configs import UniversalRun
 from prefect.storage import GitHub
 
+from prefect.tasks.kubernetes import CreateNamespacedJob
+
 
 @task
 def say_hello(name):
@@ -17,9 +19,14 @@ def say_hello(name):
     logger.info(f"{greeting}, {name}!")
 
 
+yaml_template = {}
+
+say_hello_job = CreateNamespacedJob(body=yaml_template, namespace="sitemap-generator-dev")
+
 with Flow("hello-flow") as flow:
     people = Parameter("people", default=["Arthur", "Ford", "Marvin"])
     say_hello.map(people)
+    say_hello_job(upstream_tasks=[say_hello])
 
 # Configure the `GREETING` environment variable for this flow
 flow.run_config = UniversalRun(env={"GREETING": "Hello"})
