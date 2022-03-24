@@ -40,7 +40,8 @@ yaml_template = {
     }
 }
 
-say_hello_job = CreateNamespacedJob(body=yaml_template, namespace="sitemap-generator-dev")
+say_hello_job = CreateNamespacedJob(
+    body=yaml_template, namespace="sitemap-generator-dev", kubernetes_api_key_secret=None)  # type: ignore
 
 with Flow("hello-flow") as flow:
     people = Parameter("people", default=["Arthur", "Ford", "Marvin"])
