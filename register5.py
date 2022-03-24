@@ -31,6 +31,6 @@ flow.run_config = UniversalRun(env={"GREETING": "Hello"})
 # Storing flow in github
 flow.storage = GitHub(
     repo="https://github.com/bdbernardy/prefect-tutorial",                           # name of repo
-    path="register5.py",                   # location of flow file in repo
-    access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
+    path="register5.py"                   # location of flow file in repo
+    # access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
 )
