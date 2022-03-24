@@ -4,6 +4,10 @@ import time
 import prefect
 from prefect import task, Flow, Parameter
 from prefect.run_configs import UniversalRun
+from prefect.storage import GitHub
+from prefect.tasks.secrets import PrefectSecret
+
+GITHUB_TOKEN = str(PrefectSecret("GITHUB_ACCESS_TOKEN"))
 
 
 @task
@@ -25,3 +29,10 @@ flow.run_config = UniversalRun(env={"GREETING": "Hello"})
 
 # Register the flow under the "tutorial" project
 # flow.register(project_name="tutorial")
+
+# Storing flow in github
+flow.storage = GitHub(
+    repo="https://github.com/bdbernardy/prefect-tutorial",                           # name of repo
+    path="register5.py",                   # location of flow file in repo
+    access_token_secret=GITHUB_TOKEN  # name of personal access token secret
+)
