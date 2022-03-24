@@ -7,8 +7,6 @@ from prefect.run_configs import UniversalRun
 from prefect.storage import GitHub
 from prefect.tasks.secrets import PrefectSecret
 
-GITHUB_TOKEN = str(PrefectSecret("GITHUB_ACCESS_TOKEN"))
-
 
 @task
 def say_hello(name):
@@ -34,5 +32,5 @@ flow.run_config = UniversalRun(env={"GREETING": "Hello"})
 flow.storage = GitHub(
     repo="https://github.com/bdbernardy/prefect-tutorial",                           # name of repo
     path="register5.py",                   # location of flow file in repo
-    access_token_secret=GITHUB_TOKEN  # name of personal access token secret
+    access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
 )
