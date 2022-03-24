@@ -5,7 +5,6 @@ import prefect
 from prefect import task, Flow, Parameter
 from prefect.run_configs import UniversalRun
 from prefect.storage import GitHub
-from prefect.tasks.secrets import PrefectSecret
 
 
 @task
@@ -25,12 +24,12 @@ with Flow("hello-flow") as flow:
 # Configure the `GREETING` environment variable for this flow
 flow.run_config = UniversalRun(env={"GREETING": "Hello"})
 
-# Register the flow under the "tutorial" project
-# flow.register(project_name="tutorial")
-
 # Storing flow in github
 flow.storage = GitHub(
     repo="bdbernardy/prefect-tutorial",                           # name of repo
-    path="register5.py"                   # location of flow file in repo
+    path="kubernetes_flow.py"                   # location of flow file in repo
     # access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
 )
+
+# Register the flow under the "tutorial" project
+flow.register(project_name="tutorial")
