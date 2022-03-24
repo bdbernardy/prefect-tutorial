@@ -19,7 +19,26 @@ def say_hello(name):
     logger.info(f"{greeting}, {name}!")
 
 
-yaml_template = {}
+yaml_template = {
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "pi"
+    },
+    "spec": {
+        "template": {
+            "spec": {
+                "containers": [{
+                    "name": "pi",
+                    "image": "perl",
+                    "command": ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+                }]
+            },
+            "restartPolicy": "Never"
+        },
+        "backoffLimit": 4
+    }
+}
 
 say_hello_job = CreateNamespacedJob(body=yaml_template, namespace="sitemap-generator-dev")
 
