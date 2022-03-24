@@ -45,7 +45,7 @@ say_hello_job = CreateNamespacedJob(body=yaml_template, namespace="sitemap-gener
 with Flow("hello-flow") as flow:
     people = Parameter("people", default=["Arthur", "Ford", "Marvin"])
     say_hello.map(people)
-    say_hello_job(upstream_tasks=[say_hello])
+    say_hello_job()
 
 # Configure the `GREETING` environment variable for this flow
 flow.run_config = UniversalRun(env={"GREETING": "Hello"})
