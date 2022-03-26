@@ -34,12 +34,15 @@ def create_template(name: str):
 
 
 job1 = CreateNamespacedJob(
+    name="job1",
     body=create_template("job1"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
 job2 = CreateNamespacedJob(
+    name="job2",
     body=create_template("job2"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
 job3 = CreateNamespacedJob(
+    name="job3",
     body=create_template("job2"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
 with Flow("parallel-flow") as flow:
