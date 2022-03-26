@@ -50,7 +50,7 @@ with Flow("parallel-flow") as flow:
 # Storing flow in github
 flow.storage = GitHub(
     repo="bdbernardy/prefect-tutorial",                           # name of repo
-    path="kubernetes_flow.py"                   # location of flow file in repo
+    path="parallelism_flow.py"                   # location of flow file in repo
     # access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
 )
 
