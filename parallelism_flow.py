@@ -22,8 +22,8 @@ def create_template(name: str):
                 "spec": {
                     "containers": [{
                         "name": name,
-                        "image": "eu.gcr.io/busbud-integrations/k8-tests:latest"
-                        # "command": ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+                        "image": "eu.gcr.io/busbud-integrations/k8-tests:latest",
+                        "command": ["node",  "wait.js"]
                     }],
                     "restartPolicy": "Never"
                 },
@@ -49,8 +49,18 @@ job4 = CreateNamespacedJob(
     name="job4",
     body=create_template("job4"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
+
+@task
+def print_result(result):
+    # Add a sleep to simulate some long-running task
+    time.sleep(10)
+    logger = prefect.context.get("logger")
+    logger.info(result)
+
+
 with Flow("parallel-flow") as flow:
-    job3(upstream_tasks=[job1, job2])
+    result = job3(upstream_tasks=[job1, job2])
+    print_result(result)
 
 # Storing flow in github
 flow.storage = GitHub(
