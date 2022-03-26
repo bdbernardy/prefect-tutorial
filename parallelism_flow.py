@@ -15,7 +15,7 @@ def create_template(name: str):
         "apiVersion": "batch/v1",
         "kind": "Job",
         "metadata": {
-            "name": "pi"
+            "name": name
         },
         "spec": {
             "template": {
