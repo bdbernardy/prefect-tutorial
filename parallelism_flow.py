@@ -43,11 +43,13 @@ job2 = CreateNamespacedJob(
 
 job3 = CreateNamespacedJob(
     name="job3",
-    body=create_template("job2"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
+    body=create_template("job3"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
+
+job4 = CreateNamespacedJob(
+    name="job4",
+    body=create_template("job4"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
 with Flow("parallel-flow") as flow:
-    job1()
-    job2()
     job3(upstream_tasks=[job1, job2])
 
 # Storing flow in github
