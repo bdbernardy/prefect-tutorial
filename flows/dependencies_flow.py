@@ -21,7 +21,7 @@ def generate_id():
 @task
 def before_hello():
     logger = prefect.context.get("logger")
-    logger.info("After hello")
+    logger.info("Before hello")
     time.sleep(10)
 
 
@@ -47,7 +47,7 @@ def after_hello(generated_id: str):
     logger.info(f"After hello. The generated id was {generated_id}")
 
 
-with Flow("dependenciese-flow") as flow:
+with Flow("dependencies-flow") as flow:
     people = Parameter("people", default=["Abdul", "Gaston", "Marvin"])
 
     my_id = generate_id()

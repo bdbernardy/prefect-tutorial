@@ -1,8 +1,9 @@
 import time
 
-import prefect
-from prefect import task, Flow
+from prefect import Flow
 from prefect.storage import GitHub
+from prefect.executors import LocalDaskExecutor
+
 
 from prefect.tasks.kubernetes import CreateNamespacedJob
 
@@ -42,29 +43,20 @@ job3 = CreateNamespacedJob(
     name="job3",
     body=create_template("job3"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
-job4 = CreateNamespacedJob(
-    name="job4",
-    body=create_template("job4"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
-
-
-@task
-def print_result(result):
-    # Add a sleep to simulate some long-running task
-    time.sleep(10)
-    logger = prefect.context.get("logger")
-    logger.info(result)
-
 
 with Flow("parallel-flow") as flow:
-    result3 = job3(upstream_tasks=[job1, job2])
-    print_result(result3)
+    job1_task = job1()
+    job2_task = job2()
+    job3(upstream_tasks=[job1_task, job2_task])
 
 # Storing flow in github
 flow.storage = GitHub(
     repo="bdbernardy/prefect-tutorial",                           # name of repo
-    path="parallelism_flow.py"                   # location of flow file in repo
+    path="flows/create_namespace_job_flow.py"                   # location of flow file in repo
     # access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
 )
+
+flow.executor = LocalDaskExecutor()
 
 # Register the flow under the "tutorial" project
 flow.register(project_name="tutorial")
