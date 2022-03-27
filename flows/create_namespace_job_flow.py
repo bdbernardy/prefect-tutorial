@@ -44,7 +44,7 @@ job3 = CreateNamespacedJob(
     body=create_template("job3"), namespace="ua-prefect", kubernetes_api_key_secret=None)  # type: ignore
 
 
-with Flow("parallel-flow") as flow:
+with Flow("create-job-flow") as flow:
     job1_task = job1()
     job2_task = job2()
     job3(upstream_tasks=[job1_task, job2_task])
