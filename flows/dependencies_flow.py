@@ -53,7 +53,8 @@ with Flow("dependenciese-flow") as flow:
     my_id = generate_id()
     before_hello_task = before_hello()
 
-    say_hello_tasks = say_hello.map(people, upstream_tasks=[before_hello_task])
+    say_hello_tasks = say_hello.map(people)
+    say_hello_tasks.set_upstream(before_hello_task)
 
     during_hello_task = during_hello()
     during_hello_task.set_upstream(before_hello_task)
