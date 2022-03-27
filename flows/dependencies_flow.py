@@ -6,6 +6,7 @@ import prefect
 from prefect import task, Flow, Parameter
 from prefect.run_configs import UniversalRun
 from prefect.executors import LocalDaskExecutor
+from prefect.storage import GitHub
 
 
 @task
@@ -65,6 +66,12 @@ with Flow("dependenciese-flow") as flow:
 flow.run_config = UniversalRun(env={"GREETING": "Hello"})
 
 flow.executor = LocalDaskExecutor()
+
+flow.storage = GitHub(
+    repo="bdbernardy/prefect-tutorial",                           # name of repo
+    path="flows/dependencies_flow.py"                   # location of flow file in repo
+    # access_token_secret="GITHUB_ACCESS_TOKEN"  # name of personal access token secret
+)
 
 # Register the flow under the "tutorial" project
 flow.register(project_name="tutorial")
