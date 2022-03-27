@@ -1,10 +1,7 @@
-from asyncio import wait_for
-import os
 import time
 
 import prefect
-from prefect import task, Flow, Parameter
-from prefect.run_configs import UniversalRun
+from prefect import task, Flow
 from prefect.storage import GitHub
 
 from prefect.tasks.kubernetes import CreateNamespacedJob
@@ -59,8 +56,8 @@ def print_result(result):
 
 
 with Flow("parallel-flow") as flow:
-    result = job3(upstream_tasks=[job1, job2])
-    print_result(result)
+    result3 = job3(upstream_tasks=[job1, job2])
+    print_result(result3)
 
 # Storing flow in github
 flow.storage = GitHub(
